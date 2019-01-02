@@ -8,8 +8,6 @@ LABEL \
   org.asyla.maintainer="shepner@asyla.org" \
   org.asyla.description="Handbrake CLI"
 
-RUN ["cpanm", "Term::ReadLine"]
-
 RUN apt-get update -q
 RUN apt-get install -qy apt-utils
 RUN apt-get install -qy software-properties-common
