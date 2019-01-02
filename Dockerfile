@@ -14,7 +14,7 @@ RUN \
 
 RUN \
   apt-get update -q && \
-  apt-get install -qy handbrake-cli && \
+  apt-get install -qy handbrake-cli ffmpeg wget && \
   apt-get clean
 
 
