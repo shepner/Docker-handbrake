@@ -1,5 +1,7 @@
 # reference:
 # https://hub.docker.com/r/robshad/handbrake-cli/dockerfile
+#
+# sudo docker build https://github.com/shepner/Docker-handbrake.git
 
 FROM ubuntu:18.04
 
@@ -58,7 +60,7 @@ RUN apt-get install -qy wget
 #E: The repository 'http://ppa.launchpad.net/stebbins/handbrake-snapshots/ubuntu bionic Release' does not have a Release file.
 RUN add-apt-repository ppa:stebbins/handbrake-git-snapshots
 
-RUN add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
+#RUN add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
 
 RUN apt-get update -q
 RUN apt-get install -qy handbrake-cli
