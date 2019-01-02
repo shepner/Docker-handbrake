@@ -11,9 +11,9 @@ LABEL \
   org.asyla.description="Handbrake CLI"
 
 RUN apt-get update -q
+RUN apt-get install -qy apt-utils
 RUN apt-get install -qy perl
 RUN apt-get install -qy wget
-RUN apt-get install -qy apt-utils
 RUN apt-get install -qy software-properties-common
 
 # https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
