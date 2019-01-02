@@ -9,8 +9,7 @@ LABEL \
   org.asyla.description="Handbrake CLI"
 
 RUN \
-  add-apt-repository ppa:stebbins/handbrake-snapshots && \
-  add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
+  add-apt-repository ppa:stebbins/handbrake-snapshots
 
 RUN \
   apt-get update -q && \
