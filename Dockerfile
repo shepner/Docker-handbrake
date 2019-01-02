@@ -8,18 +8,19 @@ LABEL \
   org.asyla.maintainer="shepner@asyla.org" \
   org.asyla.description="Handbrake CLI"
 
-RUN \
-  apt-get update -q && \
-  apt-get install -qy software-properties-common wget
+RUN apt-get update -q
+RUN apt-get install -qy apt-utils
+RUN apt-get install -qy software-properties-common
+RUN apt-get install -qy wget
 
-RUN \
-  add-apt-repository ppa:stebbins/handbrake-snapshots && \
-  add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
+RUN add-apt-repository ppa:stebbins/handbrake-snapshots
+RUN add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
 
-RUN \
-  apt-get update -q && \
-  apt-get install -qy handbrake-cli ffmpeg \
-  apt-get clean
+RUN apt-get update -q
+RUN apt-get install -qy handbrake-cli
+RUN apt-get install -qy ffmpeg
+
+RUN apt-get clean
 
 
 
