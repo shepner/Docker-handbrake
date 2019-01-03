@@ -20,7 +20,6 @@ RUN add-apt-repository ppa:stebbins/handbrake-releases
 # https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-git-snapshots
 # RUN add-apt-repository ppa:stebbins/handbrake-git-snapshots
 
-#RUN add-apt-repository ppa:kirillshkrogalev/ffmpeg-next
 
 RUN apt-get update -q
 RUN apt-get install -qy handbrake-cli
