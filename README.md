@@ -1,39 +1,24 @@
 # Docker-handbrake
 
+This is intended to be a Docker based replacement of the HandBrakeCLI.  This means it depends on external scripts for any automations and is not intended to be a continuous running service.  Run it from scripts.  This gives the advantage of not consuming resources when it isnt in use and also permits running N copies if you desire.
 
 
-
-## Notes
-
-https://hub.docker.com/r/jlesage/handbrake
-
-this might be more suitable:  https://github.com/jongillies/docker-handbrake-cli
-
-``` shell
-mkdir -p /mnt/nas/docker/handbrake
-
-sudo docker service create \
-  --name handbrake \
-  --publish published=5800,target=5800,protocol=tcp,mode=ingress \
-  --mount type=bind,src=/mnt/nas/docker/handbrake,dst=/config:rw \
-  --mount type=bind,src=/mnt/nas/media/jobs/watch,dst=/watch:rw \
-  --mount type=bind,src=/mnt/nas/media/jobs/output,dst=/output:rw \
-  --mount type=bind,src=/mnt/nas/media/jobs/storage,dst=/storage:ro \
-  --env AUTOMATED_CONVERSION_PRESET="Very Fast 1080p30" \
-  --replicas=1 \
-  jlesage/handbrake
-```
-
-
-
+This is how to build:
 
 ``` shell
 docker build https://github.com/shepner/Docker-handbrake.git
+```
+
+
+This is an example how to run:
+
+``` shell
 docker run -e CLI_PARAMS="--version" <container>
 ```
 
 
 Possible implementation of the CLI (not the docker image):
+
 ``` shell
 #!/bin/sh
 
@@ -105,4 +90,3 @@ for SRC in $SRCLIST; do
 done
 IFS=$SAVEIFS
 ```
-
