@@ -27,4 +27,7 @@ sudo docker service create \
 
 
 
-`docker build https://github.com/shepner/Docker-handbrake.git`
+``` shell
+docker build https://github.com/shepner/Docker-handbrake.git
+docker run -e CLI_PARAMS="--version" <container>
+```
