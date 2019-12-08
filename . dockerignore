@@ -1,0 +1,9 @@
+# Exclude everything:
+#
+*
+
+# Now un-exclude anything that must be kept:
+#
+#!app
+#!LICENSE
+#!package.json
