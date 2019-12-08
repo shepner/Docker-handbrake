@@ -18,7 +18,7 @@ ENV HOME="/$PUSR"
 
 # set the default values we will use
 ARG ARG_PUID=1003
-ARG ARG_PGID=1100
+ARG ARG_PGID=1000
 
 # These now can be changed from `docker run -e [...]`
 ENV \ 
