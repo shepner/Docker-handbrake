@@ -49,13 +49,9 @@ RUN \
 # https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
 RUN add-apt-repository ppa:stebbins/handbrake-releases
 RUN apt-get update -q
-RUN \
-  apt-get install -qy handbrake-cli
-#                      ffmpeg
+RUN apt-get install -qy handbrake-cli
 
 VOLUME ["/data"]
-
-ENV CLI_PARAMS = "--help" # the parameters that we want Handbrake to use 
 
 ###########################################################################################
 # installation cleanup
