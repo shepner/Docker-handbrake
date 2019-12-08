@@ -80,5 +80,5 @@ USER $PUSR:$PGID
 
 #CMD cd /data; HandBrakeCLI $CLI_PARAMS
 
-ENTRYPOINT ["cd /data;", "HandBrakeCLI %s"]
+ENTRYPOINT ["cd", "/data", ";", "HandBrakeCLI %s"]
 CMD ["--version"]
