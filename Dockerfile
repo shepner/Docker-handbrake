@@ -45,8 +45,8 @@ RUN \
 RUN apt-get update -q
 RUN \
   apt-get install -qy apt-utils \
-                      software-properties-common \
-                      wget
+                      software-properties-common
+#                      wget
 
 # Install Handbrake 
 # https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
