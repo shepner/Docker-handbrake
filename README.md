@@ -10,83 +10,57 @@ docker build https://github.com/shepner/Docker-handbrake.git
 ```
 
 
-This is an example how to run:
+Prove it works
 
 ``` shell
-docker run -e CLI_PARAMS="--version" <container>
+docker run <container> --version
 ```
 
 
-Possible implementation of the CLI (not the docker image):
+This is an example how to run:
 
 ``` shell
-#!/bin/sh
+DIRECTORY="/root/dir"
+SRC="dir1/source dir name (year)/sub dir"
+DST="dir2/dest file name (year).mkv"
 
-HB="/usr/local/bin/HandBrakeCLI"
-RIPS="/incoming"
-SORT="/output"
-DONE="/storage"
+docker run \
+  --mount type=bind,src=$DIRECTORY,dst=/data \
+  <container> \
+  --preset "H.265 MKV 720p30" \
+  --main-feature \
+  -f av_mkv \
+  -m \
+  -e x265 \
+  -q 20 \
+  --vfr \
+  --audio-lang-list und \
+  --all-audio \
+  --subtitle-lang-list und \
+  --all-subtitles \
+  --subtitle-burned none \
+  --subtitle-default none \
+  --native-language eng \
+  -i $SRC \
+  -o $DST
+```
 
-SRCLIST=`find $RIPS -type d -d 2`
+
+Scripted example
+
+``` shell
+DIRECTORY="/root/dir"
+INCOMING="sub/dir"
+SRCLIST=`find $DIRECTORY/$INCOMING -maxdepth 2 -type d`
 
 SAVEIFS=$IFS
 IFS=$'\n' #ignore whitespace
-for SRC in $SRCLIST; do
-  NAME=`echo $SRC | awk -F'\/' '{ print $5 }'`
-  DST=$SORT/$NAME.mkv
+for SRCNAME in $SRCLIST; do
+  NAME=`echo $DIRECTORY | awk -F'\/' '{ print $5 }'`
+  DST=/some/other/dir/$NAME.mkv
 
-  #some baseline settings
-  #https://trac.handbrake.fr/wiki/BuiltInPresets
-  #https://trac.handbrake.fr/wiki/ConstantQuality
-  #http://mattgadient.com/2013/06/20/comparing-x264-rf-settings-in-handbrake-examples/
-  #http://mattgadient.com/2013/06/12/a-best-settings-guide-for-handbrake-0-9-9/
-  LEVEL=auto #https://forum.handbrake.fr/viewtopic.php?f=6&t=19368
-  PRESET=slower
-  #TUNE="--x264-tune film"
-  TUNE=""
+  docker run [...]
 
-  #adjust settings based on SD or HD source
-  DIRSIZE=`du -d0 $SRC | awk '{ print $1 }'`
-  if [ $DIRSIZE -gt 10000000 ] ; then
-    echo `date "+%Y-%m-%d %H:%M:%S"` - HD - $NAME
-    Q=22.0
-    LEVEL=4.1 #to prevent auto from going higher
-  else
-    echo `date "+%Y-%m-%d %H:%M:%S"` - SD - $NAME
-    Q=20.0
-    #LEVEL=3.1
-  fi
-
-  $HB \
-    -i "$SRC" \
-    --main-feature \
-    -o "$DST" \
-    -f mkv \
-    -m \
-    -e x264 \
-    --x264-preset $PRESET $TUNE \
-    --h264-profile auto \
-    -q $Q \
-    --h264-level $LEVEL \
-    -a 1,2,1 \
-    -E copy,copy,lame \
-    --audio-copy-mask aac,ac3,dtshd,dts,mp3 \
-    --audio-fallback lame \
-    -B 160,160,160 \
-    -6 auto,auto,dpl2 \
-    -R Auto,Auto,Auto \
-    -D 0.0,0.0,0.0 \
-    --loose-anamorphic \
-    --modulus 2 \
-    --decom \
-    -s 1,2 \
-    -F 1 \
-    -N eng \
-    --native-dub \
-    2> "$DST.log"
-
-  mv "$RIPS/$NAME" "$DONE/$NAME"
-  
 done
 IFS=$SAVEIFS
 ```
