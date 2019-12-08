@@ -78,4 +78,4 @@ RUN \
 
 USER $PUSR:$PGID
 
-CMD HandBrakeCLI "${CLI_PARAMS}"
+CMD HandBrakeCLI $CLI_PARAMS
