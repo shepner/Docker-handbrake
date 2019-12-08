@@ -17,7 +17,7 @@ ENV PUSR=docker
 ENV \
   HOME="/$PUSR" \
   PUID=1003 \
-  PGID=1000
+  PGID=1100
 
 RUN \
   groupadd -r -g $PGID $PUSR \
