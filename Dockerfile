@@ -66,19 +66,8 @@ RUN \
 
 ###########################################################################################
 # startup tasks
-#ADD startup.sh $HOME/startup.sh
-
-#RUN \
-#  chmod 555 $HOME/startup.sh \
-#  && chown -R $PUID:$PGID $HOME
-
-#USER $PUSR:$PGID
-
-#CMD $HOME/startup.sh
-
 USER $PUSR:$PGID
 
-#CMD cd /data; HandBrakeCLI $CLI_PARAMS
-
-ENTRYPOINT ["HandBrakeCLI", "%s"]
-CMD ["--version"]
+WORKDIR "/data"
+ENTRYPOINT ["HandBrakeCLI", "%s"] # pass all commandline params to `docker run <container>` to this
+CMD ["--help"] # use these params by default
