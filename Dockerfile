@@ -8,9 +8,7 @@ FROM ubuntu:latest
 
 ###########################################################################################
 # general settings
-ENV \
-  FILENAME='' \
-  TERM=xterm
+ENV TERM=xterm
   
 ###########################################################################################
 # user setup
@@ -46,17 +44,18 @@ RUN apt-get update -q
 RUN \
   apt-get install -qy apt-utils \
                       software-properties-common
-#                      wget
 
 # Install Handbrake 
 # https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
 RUN add-apt-repository ppa:stebbins/handbrake-releases
 RUN apt-get update -q
-RUN apt-get install -qy handbrake-cli \
-                        ffmpeg
+RUN \
+  apt-get install -qy handbrake-cli
+#                      ffmpeg
 
-VOLUME ["/src"] #read the incoming file from here
-VOLUME ["/dst"] #write the resulting file to here
+VOLUME ["/data"]
+
+ENV CLI_PARAMS = "--help" # the parameters that we want Handbrake to use 
 
 ###########################################################################################
 # installation cleanup
@@ -67,12 +66,16 @@ RUN \
 
 ###########################################################################################
 # startup tasks
-ADD startup.sh $HOME/startup.sh
+#ADD startup.sh $HOME/startup.sh
 
-RUN \
-  chmod 555 $HOME/startup.sh \
-  && chown -R $PUID:$PGID $HOME
+#RUN \
+#  chmod 555 $HOME/startup.sh \
+#  && chown -R $PUID:$PGID $HOME
+
+#USER $PUSR:$PGID
+
+#CMD $HOME/startup.sh
 
 USER $PUSR:$PGID
 
-CMD $HOME/startup.sh
+CMD HandBrakeCLI $CLI_PARAMS
