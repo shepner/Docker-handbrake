@@ -23,3 +23,8 @@ sudo docker service create \
   --replicas=1 \
   jlesage/handbrake
 ```
+
+
+
+
+`docker build https://github.com/shepner/Docker-handbrake.git`
