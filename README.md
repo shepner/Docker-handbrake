@@ -51,16 +51,16 @@ Scripted example
 ``` shell
 DIRECTORY="/root/dir"
 INCOMING="sub/dir"
-SRCLIST=`find $DIRECTORY/$INCOMING -maxdepth 2 -type d`
+OUTGOING="other/dir"
 
-SAVEIFS=$IFS
-IFS=$'\n' #ignore whitespace
+#only list the subdirs we care about and strip off the stuff we dont want
+#print0 removes the newlines
+SRCLIST=`find $DIRECTORY/$INCOMING -maxdepth 2 -mindepth 2 -type d -print | sed "s|$DIRECTORY||" | sed "s|^/*||"`
+
 for SRCNAME in $SRCLIST; do
-  NAME=`echo $DIRECTORY | awk -F'\/' '{ print $5 }'`
-  DST=/some/other/dir/$NAME.mkv
-
-  docker run [...]
-
+  DST=$OUTGOING/`echo $SRCNAME | awk -F '/' '{ print $2 ".mkv" }'` #split save out the middle field and create the new filename
+  echo $DST
+  #docker run [...]
+  #do other stuff
 done
-IFS=$SAVEIFS
 ```
