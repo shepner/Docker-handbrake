@@ -14,10 +14,15 @@ ENV TERM=xterm
 # user setup
 ENV PUSR=docker
 
-ENV \
-  HOME="/$PUSR" \
-  PUID=1003 \
-  PGID=1100
+ENV HOME="/$PUSR"
+
+ARG \ # set the default values we will use
+  ARG_PUID=1003 \
+  ARG_PGID=11100
+
+ENV \ # These now can be changed from `docker run -e [...]`
+  PUID=$ARG_PUID \
+  PGID=$ARG_PGID
 
 RUN \
   groupadd -r -g $PGID $PUSR \
