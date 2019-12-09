@@ -80,6 +80,4 @@ for SRC in $SRCLIST; do
   echo ""
 done
 IFS=$SAVEIFS
-
-# mv "$RIPS/$NAME" "$DONE/$NAME"
 ```
