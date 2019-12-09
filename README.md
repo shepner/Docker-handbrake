@@ -49,6 +49,7 @@ Scripted example
 DIRECTORY="/root/dir"
 INCOMING="sub/dir"
 OUTGOING="other/dir"
+COMPLETE="anotherdir"
 
 #only list the subdirs we care about and strip off the stuff we dont want
 SRCLIST=`find $DIRECTORY/$INCOMING -maxdepth 2 -mindepth 2 -type d -print | sed "s|$DIRECTORY||" | sed "s|^/*||"`
@@ -59,10 +60,9 @@ for SRC in $SRCLIST; do
   DST=$OUTGOING/`echo $SRC | awk -F '/' '{ print $2 ".mkv" }'`
   echo "src=$SRC"
   echo "dst=$DST"
-  echo "log=$DST.log"
   docker run \
     --mount type=bind,src=$DIRECTORY,dst=/data \
-    7891c902275d \
+    shepner/handbrake \
       --preset "H.265 MKV 720p30" \
       --input "$SRC" \
       --main-feature \
@@ -75,7 +75,8 @@ for SRC in $SRCLIST; do
       --subtitle 1,2,3,4,5,6,7,8,9 \
       --native-language eng \
       --native-dub \
-      >> "/dev/null" 2>&1 &
+    >> "/dev/null" 2>&1 \
+    && mv echo "$SRC" | awk -F '/' '{ print $1 "/" $2 }' "$COMPLETE" &
   echo ""
 done
 IFS=$SAVEIFS
