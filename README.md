@@ -72,6 +72,7 @@ for SRC in $SRCLIST; do
   ssh docker@$DOCKERHOST[$INDEX] \
     docker run \
       --mount type=bind,src=$DIRECTORY,dst=/data \
+      --cpus="3" \
       shepner/handbrake \
         --preset "H.265 MKV 720p30" \
         --input "$SRC" \
