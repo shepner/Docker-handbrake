@@ -28,21 +28,18 @@ docker run \
   --mount type=bind,src=$DIRECTORY,dst=/data \
   <container> \
   --preset "H.265 MKV 720p30" \
+  --input "$SRC" \
+  #--title 3 \
   --main-feature \
-  -f av_mkv \
-  -m \
-  -e x265 \
-  -q 20 \
+  --output "$DST" \
+  --markers \
+  --quality 20.0 \
   --vfr \
   --audio-lang-list und \
   --all-audio \
-  --subtitle-lang-list und \
-  --all-subtitles \
-  --subtitle-burned none \
-  --subtitle-default none \
+  --subtitle 1,2,3,4,5,6,7,8,9 \
   --native-language eng \
-  -i $SRC \
-  -o $DST
+  --native-dub
 ```
 
 
@@ -54,13 +51,34 @@ INCOMING="sub/dir"
 OUTGOING="other/dir"
 
 #only list the subdirs we care about and strip off the stuff we dont want
-#print0 removes the newlines
 SRCLIST=`find $DIRECTORY/$INCOMING -maxdepth 2 -mindepth 2 -type d -print | sed "s|$DIRECTORY||" | sed "s|^/*||"`
 
-for SRCNAME in $SRCLIST; do
-  DST=$OUTGOING/`echo $SRCNAME | awk -F '/' '{ print $2 ".mkv" }'` #split save out the middle field and create the new filename
-  echo $DST
-  #docker run [...]
-  #do other stuff
+SAVEIFS=$IFS
+IFS=$'\n'
+for SRC in $SRCLIST; do
+  DST=$OUTGOING/`echo $SRC | awk -F '/' '{ print $2 ".mkv" }'`
+  echo "src=$SRC"
+  echo "dst=$DST"
+  echo "log=$DST.log"
+  docker run \
+    --mount type=bind,src=$DIRECTORY,dst=/data \
+    7891c902275d \
+      --preset "H.265 MKV 720p30" \
+      --input "$SRC" \
+      --main-feature \
+      --output "$DST" \
+      --markers \
+      --quality 20.0 \
+      --vfr \
+      --audio-lang-list und \
+      --all-audio \
+      --subtitle 1,2,3,4,5,6,7,8,9 \
+      --native-language eng \
+      --native-dub \
+      >> "/dev/null" 2>&1 &
+  echo ""
 done
+IFS=$SAVEIFS
+
+# mv "$RIPS/$NAME" "$DONE/$NAME"
 ```
