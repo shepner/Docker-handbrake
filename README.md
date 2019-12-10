@@ -56,6 +56,8 @@ DOCKERHOST[0]="de01"
 DOCKERHOST[1]="de02"
 DOCKERHOST[2]="de03"
 DOCKERHOST[3]="de04"
+DOCKERHOST[4]="de05"
+DOCKERHOST[5]="de06"
 
 #only list the subdirs we care about and strip off the stuff we dont want
 SRCLIST=`find $DIRECTORY/$INCOMING -maxdepth 2 -mindepth 2 -type d -print | sed "s|$DIRECTORY||" | sed "s|^/*||"`
@@ -66,33 +68,44 @@ IFS=$'\n'
 INDEX=0
 for SRC in $SRCLIST; do
   DST=$OUTGOING/`echo $SRC | awk -F '/' '{ print $2 ".mkv" }'`
+  SCRIPT=/tmp/`date +"%Y%m%d%H%M%S"`.sh
+  
   echo "SRC=$SRC"
   echo "DST=$DST"
+  echo "DOCKERHOST=${DOCKERHOST[$INDEX]}"
+  echo "SCRIPT=$SCRIPT"
   
-  ssh docker@$DOCKERHOST[$INDEX] \
-    docker run \
-      --mount type=bind,src=$DIRECTORY,dst=/data \
-      --cpus="3" \
-      shepner/handbrake \
-        --preset "H.265 MKV 720p30" \
-        --input "$SRC" \
-        --main-feature \
-        --output "$DST" \
-        --markers \
-        --quality 20.0 \
-        --vfr \
-        --audio-lang-list und \
-        --all-audio \
-        --subtitle 1,2,3,4,5,6,7,8,9 \
-        --native-language eng \
-        --native-dub \
-      >> "/dev/null" 2>&1 \
-      && mv echo "$SRC" | awk -F '/' '{ print $1 "/" $2 }' "$COMPLETE" &
-      
-  if [ $INDEX == ${#DOCKERHOST[@]} ] ; then
-    INDEX=0
+  ssh docker@${DOCKERHOST[$INDEX]} "cat >$SCRIPT" <<EOM
+IFS=$'\n'
+
+docker run \
+  --mount type=bind,src=$DIRECTORY,dst=/data \
+  --cpus="3" \
+  shepner/handbrake \
+    --preset "H.265 MKV 720p30" \
+    --input "$SRC" \
+    --main-feature \
+    --output "$DST" \
+    --markers \
+    --quality 20.0 \
+    --vfr \
+    --audio-lang-list und \
+    --all-audio \
+    --subtitle 1,2,3,4,5,6,7,8,9 \
+    --native-language eng \
+    --native-dub \
+  >> "$DST.log" 2>&1
+  
+#mv `echo "$SRC" | awk -F '/' '{ print $1 "/" $2 }'` "$COMPLETE"
+EOM
+
+  ssh docker@${DOCKERHOST[$INDEX]} bash $SCRIPT &
+
+  if [ $INDEX -lt `expr ${#DOCKERHOST[@]} - 1` ] ; then
+    INDEX=`expr $INDEX + 1`
   else
-    INDEX=`expr $INDEX +1`
+    INDEX=0
+  fi
     
   echo ""
 done
