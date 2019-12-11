@@ -94,9 +94,11 @@ docker run \
     --subtitle 1,2,3,4,5,6,7,8,9 \
     --native-language eng \
     --native-dub \
-  >> "$DST.log" 2>&1
+  2> "$DIRECTORY/$DST.log" 1> "/dev/null"
   
 #mv `echo "$SRC" | awk -F '/' '{ print $1 "/" $2 }'` "$COMPLETE"
+
+rm "$SCRIPT"
 EOM
 
   ssh docker@${DOCKERHOST[$INDEX]} bash $SCRIPT &
@@ -111,3 +113,24 @@ EOM
 done
 IFS=$SAVEIFS
 ```
+
+
+This scans the structure and outputs JSON data (sorta)
+
+``` shell
+IFS=$'\n'
+  
+docker run \
+  --mount type=bind,src=/mnt/nas/media/Videos,dst=/data \
+  --cpus="3" \
+  shepner/handbrake \
+    --json \
+    --input <directory>
+    --title 0 > test.txt
+
+awk '/JSON Title Set/{i++}i' test.txt \
+  | sed "s/JSON Title Set: //" \
+  | python3 -c "import sys, json; print(json.load(sys.stdin)['TitleList'])"
+```
+
+The results at this point is an array of each title.  I think the length of the title is in `"Duration": { "Ticks": <number> }`
