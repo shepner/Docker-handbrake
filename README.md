@@ -134,3 +134,24 @@ awk '/JSON Title Set/{i++}i' test.txt \
 ```
 
 The results at this point is an array of each title.  I think the length of the title is in `"Duration": { "Ticks": <number> }`
+
+This seems a bit easier:
+
+``` shell
+cat test.txt \
+| grep "scan: scanning title" -A 2 \
+| sed -e '/scanning title/{n;d;n;}' \
+| sed -e 's/^.*title //' \
+| sed -e 's/^.*(//; s/)//'
+```
+
+Yes this can be condensed but readability would suffer.  The results look like this:
+
+```
+--
+34
+87133 ms
+--
+35
+66600 ms
+```
