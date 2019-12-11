@@ -96,7 +96,7 @@ docker run \
     --native-dub \
   2> "$DIRECTORY/$DST.log" 1> "/dev/null"
   
-#mv `echo "$SRC" | awk -F '/' '{ print $1 "/" $2 }'` "$COMPLETE"
+mv "$DIRECTORY/`echo "$SRC" | awk -F '/' '{ print $1 "/" $2 }'`" "$DIRECTORY/$COMPLETE"
 
 rm "$SCRIPT"
 EOM
