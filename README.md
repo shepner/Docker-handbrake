@@ -114,8 +114,11 @@ done
 IFS=$SAVEIFS
 ```
 
+---
 
-This scans the structure and outputs JSON data (sorta)
+It would be useful to scan for and select the longest title rather then relying on `main-feature` being set correctly.  HandBrakeCLI unfortunately doesnt do this automatically (unlike the GUI) and also doesnt make things easy.
+
+It does have the ability to scan the structure and output JSON data (sorta).  The problem is that it is outputting multiple JSON structures.  Fortunately the Title Set section is last so you can delete everything prior to that. (yes this could have been written better):
 
 ``` shell
 IFS=$'\n'
@@ -133,11 +136,18 @@ awk '/JSON Title Set/{i++}i' test.txt \
   | python3 -c "import sys, json; print(json.load(sys.stdin)['TitleList'])"
 ```
 
-The results at this point is an array of each title.  I think the length of the title is in `"Duration": { "Ticks": <number> }`
-
-This seems a bit easier:
+The results at this point is an array of each title.  I think the length of the title is in `"Duration": { "Ticks": <number> }` but didnt spend the time digging into it.  The default output seems easier to deal with:
 
 ``` shell
+IFS=$'\n'
+  
+docker run \
+  --mount type=bind,src=/mnt/nas/media/Videos,dst=/data \
+  --cpus="3" \
+  shepner/handbrake \
+    --input <directory> \
+    --title 0 2> test.txt
+    
 cat test.txt \
 | grep "scan: scanning title" -A 2 \
 | sed -e '/scanning title/{n;d;n;}' \
@@ -145,13 +155,16 @@ cat test.txt \
 | sed -e 's/^.*(//; s/)//'
 ```
 
-Yes this can be condensed but readability would suffer.  The results look like this:
+(again, that could be written better)
+
+Here are the results which are becoming a bit more manageable:
 
 ```
---
 34
 87133 ms
 --
 35
 66600 ms
 ```
+
+...or stop screwing around and just write a Perl script to deal with all of this and then kick off the resulting job(s)
