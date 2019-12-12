@@ -91,6 +91,8 @@ docker run \
     --vfr \
     --audio-lang-list und \
     --all-audio \
+    --aencoder copy,copy,copy,copy,copy,copy,copy,copy,copy \
+    --audio-copy-mask aac,ac3,eac3,truehd,dts,dtshd,mp3,flac \
     --subtitle 1,2,3,4,5,6,7,8,9 \
     --native-language eng \
     --native-dub \
@@ -101,7 +103,8 @@ mv "$DIRECTORY/`echo "$SRC" | awk -F '/' '{ print $1 "/" $2 }'`" "$DIRECTORY/$CO
 rm "$SCRIPT"
 EOM
 
-  ssh docker@${DOCKERHOST[$INDEX]} bash $SCRIPT &
+  #ssh docker@${DOCKERHOST[$INDEX]} bash $SCRIPT &
+  ssh docker@${DOCKERHOST[$INDEX]} screen -d -m bash $SCRIPT
 
   if [ $INDEX -lt `expr ${#DOCKERHOST[@]} - 1` ] ; then
     INDEX=`expr $INDEX + 1`
