@@ -78,7 +78,7 @@ RUN \
 
 ###########################################################################################
 # startup tasks
-USER $PUSR:$PGID
+#USER $PUSR:$PGID
 
 WORKDIR /data
 #ENTRYPOINT ["HandBrakeCLI", "%s"] # pass all commandline params to `docker run <container>` to this
