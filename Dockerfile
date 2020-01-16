@@ -54,7 +54,7 @@ RUN \
 # Install [Flatpack](https://flatpak.org/setup/Ubuntu/)
 # [Install Handbrake](https://handbrake.fr/docs/en/1.2.0/get-handbrake/download-and-install.html)
 RUN \
-  sudo add-apt-repository ppa:alexlarsson/flatpak \
+  add-apt-repository ppa:alexlarsson/flatpak \
   && apt-get update -q \
   && apt-get install -qy flatpak \
   && flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
