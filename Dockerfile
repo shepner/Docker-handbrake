@@ -59,7 +59,7 @@ RUN \
   && apt-get install -qy flatpak \
   && flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
   
-RUN flatpak --user install https://flathub.org/repo/appstream/fr.handbrake.ghb.flatpakref
+RUN flatpak --user install -y https://flathub.org/repo/appstream/fr.handbrake.ghb.flatpakref
 
 # Install Handbrake 
 # https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
