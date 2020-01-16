@@ -33,10 +33,10 @@ RUN \
 
 ###########################################################################################
 # Update base packages
-RUN \
-  apt-get -q update \
-  && apt-get -qy upgrade \
-  && apt-get -qy dist-upgrade
+#RUN \
+#  apt-get -q update \
+#  && apt-get -qy upgrade \
+#  && apt-get -qy dist-upgrade
 
 ###########################################################################################
 # general utils
