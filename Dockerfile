@@ -4,7 +4,8 @@
 # sudo docker build https://github.com/shepner/Docker-handbrake.git
 
 ###########################################################################################
-FROM ubuntu:latest
+#FROM ubuntu:latest
+FROM ubuntu:19.04
 
 ###########################################################################################
 # general settings
