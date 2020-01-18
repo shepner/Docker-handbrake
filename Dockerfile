@@ -41,16 +41,6 @@ RUN \
   apt-get install -qy apt-utils \
                       software-properties-common
 
-# Install [Flatpack](https://flatpak.org/setup/Ubuntu/)
-# [Install Handbrake](https://handbrake.fr/docs/en/1.2.0/get-handbrake/download-and-install.html)
-RUN \
-  add-apt-repository ppa:alexlarsson/flatpak \
-  && apt-get update -q \
-  && apt-get install -qy flatpak \
-  && flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  
-RUN flatpak --user install -y https://flathub.org/repo/appstream/fr.handbrake.ghb.flatpakref
-
 # Install Handbrake 
 # https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
 RUN add-apt-repository ppa:stebbins/handbrake-releases
