@@ -32,17 +32,6 @@ RUN \
   && chown -R $PUID:$PGID $HOME
 
 ###########################################################################################
-# Update base packages
-#RUN \
-#  apt-get -q update \
-#  && apt-get -qy upgrade \
-#  && apt-get -qy dist-upgrade
-
-###########################################################################################
-# general utils
-#RUN apt-get install -qy wget
-
-###########################################################################################
 # Handbrake
 
 # Install prerequisites
@@ -63,9 +52,9 @@ RUN flatpak --user install -y https://flathub.org/repo/appstream/fr.handbrake.gh
 
 # Install Handbrake 
 # https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
-#RUN add-apt-repository ppa:stebbins/handbrake-releases
-#RUN apt-get update -q
-#RUN apt-get install -qy handbrake-cli
+RUN add-apt-repository ppa:stebbins/handbrake-releases
+RUN apt-get update -q
+RUN apt-get install -qy handbrake-cli
 
 VOLUME ["/data"]
 
@@ -78,11 +67,7 @@ RUN \
 
 ###########################################################################################
 # startup tasks
-#USER $PUSR:$PGID
+USER $PUSR:$PGID
 
 WORKDIR /data
-#ENTRYPOINT ["HandBrakeCLI", "%s"] # pass all commandline params to `docker run <container>` to this
-#ENTRYPOINT ["flatpak", "run", "--command=HandBrakeCLI", "fr.handbrake.ghb", "%s"]
-#CMD ["--help"] # use these params by default
-
-CMD ["/bin/sh"]
+ENTRYPOINT ["HandBrakeCLI", "%s"] # pass all commandline params to `docker run <container>` to this
