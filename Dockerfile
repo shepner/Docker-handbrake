@@ -82,5 +82,7 @@ RUN \
 
 WORKDIR /data
 #ENTRYPOINT ["HandBrakeCLI", "%s"] # pass all commandline params to `docker run <container>` to this
-ENTRYPOINT ["flatpak", "run", "--command=HandBrakeCLI", "fr.handbrake.ghb", "%s"]
-CMD ["--help"] # use these params by default
+#ENTRYPOINT ["flatpak", "run", "--command=HandBrakeCLI", "fr.handbrake.ghb", "%s"]
+#CMD ["--help"] # use these params by default
+
+CMD ["/bin/sh"]
