@@ -36,16 +36,17 @@ RUN \
 # Handbrake
 
 # Install prerequisites
-RUN apt-get update -q
 RUN \
-  apt-get install -qy apt-utils \
+  apt-get update -q \
+  && apt-get install -qy apt-utils \
                       software-properties-common
 
 # Install Handbrake 
 # https://launchpad.net/~stebbins/+archive/ubuntu/handbrake-releases
-RUN add-apt-repository ppa:stebbins/handbrake-releases
-RUN apt-get update -q
-RUN apt-get install -qy handbrake-cli
+RUN \
+  add-apt-repository ppa:stebbins/handbrake-releases \
+  && apt-get update -q \
+  && apt-get install -qy handbrake-cli
 
 VOLUME ["/data"]
 
