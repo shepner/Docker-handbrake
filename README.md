@@ -117,6 +117,8 @@ done
 IFS=$SAVEIFS
 ```
 
+Useful way to run this: `sh <host> screen -d -m /handbrake.sh`
+
 ---
 
 It would be useful to scan for and select the longest title rather then relying on `main-feature` being set correctly.  HandBrakeCLI unfortunately doesnt do this automatically (unlike the GUI) and also doesnt make things easy.
